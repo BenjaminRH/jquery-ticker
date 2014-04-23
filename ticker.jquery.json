@@ -1,0 +1,34 @@
+{
+    "name": "ticker",
+    "title": "jQuery Ticker",
+    "description": "A lightweight jQuery plugin for animating a simple news ticker.",
+    "keywords": [
+        "ticker",
+        "news",
+        "marquee"
+    ],
+    "version": "1.0.0",
+    "author": {
+        "name": "Benjamin Harris",
+        "url": "https://github.com/BenjaminRH"
+    },
+    "maintainers": [
+        {
+            "name": "Benjamin Harris",
+            "email": "benjamin3harris@gmail.com",
+            "url": "https://github.com/BenjaminRH"
+        }
+    ],
+    "licenses": [
+        {
+            "type": "MIT",
+            "url": "https://raw.githubusercontent.com/BenjaminRH/jquery-ticker/master/LICENSE"
+        }
+    ],
+    "bugs": "https://github.com/BenjaminRH/jquery-ticker/issues",
+    "homepage": "https://github.com/BenjaminRH/jquery-ticker",
+    "docs": "https://github.com/jquery/jquery-color",
+    "dependencies": {
+        "jquery": ">=1.0"
+    }
+}
