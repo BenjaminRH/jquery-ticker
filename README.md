@@ -6,7 +6,7 @@ A lightweight jQuery plugin for animating a simple news ticker
 
 ## Installation
 
-Include script *after* the jQuery library (unless you are packaging scripts somehow else):
+Include script after the jQuery library:
 
 ```html
 <script src="/path/to/jquery.ticker.js"></script>
@@ -28,6 +28,8 @@ Add an HTML tag (like a `div` or a `span`) with one unordered list containing th
   </ul>
 </div>
 ```
+
+And initiate it
 
 ```javascript
 $('.ticker').ticker();
