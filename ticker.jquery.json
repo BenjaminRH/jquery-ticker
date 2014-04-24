@@ -27,7 +27,7 @@
     ],
     "bugs": "https://github.com/BenjaminRH/jquery-ticker/issues",
     "homepage": "https://github.com/BenjaminRH/jquery-ticker",
-    "docs": "https://github.com/jquery/jquery-color",
+    "docs": "https://github.com/BenjaminRH/jquery-ticker#usage",
     "dependencies": {
         "jquery": ">=1.0"
     }
