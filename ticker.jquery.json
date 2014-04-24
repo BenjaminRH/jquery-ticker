@@ -5,9 +5,10 @@
     "keywords": [
         "ticker",
         "news",
-        "marquee"
+        "marquee",
+        "news-ticker"
     ],
-    "version": "1.0.0",
+    "version": "v1.2.0",
     "author": {
         "name": "Benjamin Harris",
         "url": "https://github.com/BenjaminRH"
@@ -26,8 +27,9 @@
         }
     ],
     "bugs": "https://github.com/BenjaminRH/jquery-ticker/issues",
-    "homepage": "https://github.com/BenjaminRH/jquery-ticker",
-    "docs": "https://github.com/BenjaminRH/jquery-ticker#usage",
+    "homepage": "https://benjaminrh.github.io/jquery-ticker",
+    "docs": "https://benjaminrh.github.io/jquery-ticker#usage",
+    "demo": "https://benjaminrh.github.io/jquery-ticker/#demo",
     "dependencies": {
         "jquery": ">=1.0"
     }
