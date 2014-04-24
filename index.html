@@ -1,0 +1,112 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Jquery-ticker by BenjaminRH</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Jquery-ticker</h1>
+        <p>A lightweight jQuery plugin for animating a simple news ticker</p>
+
+        <p class="view"><a href="https://github.com/BenjaminRH/jquery-ticker">View the Project on GitHub <small>BenjaminRH/jquery-ticker</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/BenjaminRH/jquery-ticker/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/BenjaminRH/jquery-ticker/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/BenjaminRH/jquery-ticker">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a name="jquery-ticker" class="anchor" href="#jquery-ticker"><span class="octicon octicon-link"></span></a>jquery-ticker</h1>
+
+<p>A lightweight jQuery plugin for animating a simple news ticker</p>
+
+<h2>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
+
+<p>Include script after the jQuery library:</p>
+
+<div class="highlight highlight-html"><pre><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"/path/to/jquery.ticker.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+</pre></div>
+
+<h2>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<p>Add an HTML tag (like a <code>div</code> or a <code>span</code>) with one unordered list containing the ticker items inside. Other content may be inside as well.</p>
+
+<div class="highlight highlight-html"><pre><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"ticker"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;strong&gt;</span>News:<span class="nt">&lt;/strong&gt;</span>
+  <span class="nt">&lt;ul&gt;</span>
+    <span class="nt">&lt;li&gt;</span>Ticker item #1<span class="nt">&lt;/li&gt;</span>
+    <span class="nt">&lt;li&gt;</span>Ticker item #2<span class="nt">&lt;/li&gt;</span>
+    <span class="nt">&lt;li&gt;</span>Another ticker item<span class="nt">&lt;/li&gt;</span>
+    ...
+  <span class="nt">&lt;/ul&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</pre></div>
+
+<p>And initiate it</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">$</span><span class="p">(</span><span class="s1">'.ticker'</span><span class="p">).</span><span class="nx">ticker</span><span class="p">();</span>
+</pre></div>
+
+<p>You can even add some styling</p>
+
+<div class="highlight highlight-css"><pre><span class="nc">.ticker</span> <span class="p">{</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">500px</span><span class="p">;</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="m">10px</span> <span class="k">auto</span><span class="p">;</span>
+<span class="p">}</span>
+ <span class="c">/* The HTML list gets replaced with a single div,</span>
+<span class="c">    which contains the active ticker item, so you</span>
+<span class="c">    can easily style that as well */</span>
+<span class="nc">.ticker</span> <span class="nt">div</span> <span class="p">{</span>
+  <span class="k">display</span><span class="o">:</span> <span class="k">inline</span><span class="o">-</span><span class="k">block</span><span class="p">;</span>
+  <span class="n">word</span><span class="o">-</span><span class="n">wrap</span><span class="o">:</span> <span class="n">break</span><span class="o">-</span><span class="n">word</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+<h2>
+<a name="ticker-options" class="anchor" href="#ticker-options"><span class="octicon octicon-link"></span></a>Ticker Options</h2>
+
+<p>Ticker attributes can be set globally by setting properties of the <code>$.ticker.defaults</code> object or individually for each call to <code>ticker()</code> by passing a plain object to the options argument. Per-call options override the default options.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">$</span><span class="p">.</span><span class="nx">fn</span><span class="p">.</span><span class="nx">ticker</span><span class="p">.</span><span class="nx">defaults</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="nx">random</span><span class="o">:</span>        <span class="kc">false</span><span class="p">,</span> <span class="c1">// Whether to display ticker items in a random order</span>
+  <span class="nx">itemSpeed</span><span class="o">:</span>     <span class="mi">3000</span><span class="p">,</span>  <span class="c1">// The pause on each ticker item before being replaced</span>
+  <span class="nx">cursorSpeed</span><span class="o">:</span>   <span class="mi">50</span><span class="p">,</span>    <span class="c1">// Speed at which the characters are typed</span>
+  <span class="nx">pauseOnHover</span><span class="o">:</span>  <span class="kc">true</span><span class="p">,</span>  <span class="c1">// Whether to pause when the mouse hovers over the ticker</span>
+  <span class="nx">finishOnHover</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>  <span class="c1">// Whether or not to complete the ticker item instantly when moused over</span>
+  <span class="nx">cursorOne</span><span class="o">:</span>     <span class="s1">'_'</span><span class="p">,</span>   <span class="c1">// The symbol for the first part of the cursor</span>
+  <span class="nx">cursorTwo</span><span class="o">:</span>     <span class="s1">'-'</span><span class="p">,</span>   <span class="c1">// The symbol for the second part of the cursor</span>
+  <span class="nx">fade</span><span class="o">:</span>          <span class="kc">true</span><span class="p">,</span>  <span class="c1">// Whether to fade between ticker items or not</span>
+  <span class="nx">fadeInSpeed</span><span class="o">:</span>   <span class="mi">600</span><span class="p">,</span>   <span class="c1">// Speed of the fade-in animation</span>
+  <span class="nx">fadeOutSpeed</span><span class="o">:</span>  <span class="mi">300</span>    <span class="c1">// Speed of the fade-out animation</span>
+<span class="p">};</span>
+</pre></div>
+
+<h2>
+<a name="authors" class="anchor" href="#authors"><span class="octicon octicon-link"></span></a>Authors</h2>
+
+<p><a href="https://github.com/BenjaminRH">Benjamin Harris</a></p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/BenjaminRH">BenjaminRH</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
