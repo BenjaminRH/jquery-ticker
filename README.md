@@ -15,7 +15,9 @@ Include script after the jQuery library:
 
 ## Usage
 
-Add an HTML tag (like a `div` or a `span`) with one unordered list containing the ticker items inside. Other content may be inside as well.
+Add an HTML tag for the ticker container (like a `div` or a `span`) with one unordered list containing the ticker items inside. Other content may be inside the ticker container as well.
+
+Ticker headlines (the `li` tags) may contain the following basic HTML tags: `<a>`, `<b>`, `<strong>`, `<i>`, `<em>`, `<u>`, and `<span>`.
 
 ```html
 <div class="ticker">
@@ -23,7 +25,7 @@ Add an HTML tag (like a `div` or a `span`) with one unordered list containing th
   <ul>
     <li>Ticker item #1</li>
     <li>Ticker item #2</li>
-    <li>Another ticker item</li>
+    <li><em>Another</em> ticker item</li>
     ...
   </ul>
 </div>

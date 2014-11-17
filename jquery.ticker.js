@@ -1,5 +1,5 @@
 /*!
- * jQuery Ticker Plugin v1.0.0
+ * jQuery Ticker Plugin v1.2.0
  * https://github.com/BenjaminRH/jquery-ticker
  *
  * Copyright 2014 Benjamin Harris
