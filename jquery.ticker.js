@@ -167,12 +167,12 @@
                 // Generate the headline
                 var headline = '';
                 var openedTags = [];
-                for (i = 0; i <= currentHeadlinePosition; i++) {
+                for (i = 0; i < currentHeadlinePosition; i++) {
                     location = null;
                     // Check to see if there's meant to be a tag at this index
                     for (j = 0; j < headlineTagMap[currentHeadline].length; j++) {
                         // Find a tag mapped to this location, if one exists
-                        if (headlineTagMap[currentHeadline][j].start === i) {
+                        if (headlineTagMap[currentHeadline][j] && headlineTagMap[currentHeadline][j].start === i) {
                             location = headlineTagMap[currentHeadline][j]; // It does exist!
                             break;
                         }
@@ -243,7 +243,7 @@
      */
     function locateTags(text, tagList) {
         tagList = tagList || [];
-        var tags = /<\/?([a-z][a-z0-9]*)\b[^>]*>/img;
+        var tags = /<\/?([a-z][a-z0-9]*)\b[^>]*>/im;
         var selfClosing = /\/\s{0,}>$/m;
         var locations = [];
         var match, location;
@@ -262,6 +262,9 @@
                 // Now remove this tag from the string
                 // so that each location will represent it in a string without any of the tags
                 text = text.slice(0, location.start) + text.slice(location.end + 1);
+
+                // Reset the regex
+                tags.lastIndex = 0;
             }
         }
 
