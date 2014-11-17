@@ -30,8 +30,11 @@
             var allowedTags = ['a', 'b', 'strong', 'span', 'i', 'em', 'u'];
 
             // Save all the headline text
+            var h, l;
             headlineElements.each(function (index, element) {
-                headlines.push(stripTags($(this).html(), allowedTags));
+                h = stripTags($(this).html(), allowedTags);
+                l = locateTags(h, allowedTags)
+                headlines.push(h);
             });
 
             // Randomize?
@@ -199,13 +202,16 @@
      * Locates all of the request tags in a string.
      * Returns an array of locations, each location being an array of the tag's start and end indexes.
      */
-    function locateTags(text, tags) {
+    function locateTags(text, tagList) {
+        tagList = tagList || [];
         var tags = /<\/?([a-z][a-z0-9]*)\b[^>]*>/img;
         var locations = [];
         var match;
 
         while (match = tags.exec(text)) {
-            locations.push([match.index, match[0].length - 1]);
+            if (tagList.length === 0 || tagList.indexOf(match[1]) !== -1) {
+                locations.push([match.index, match[0].length - 1]);
+            }
         }
 
         return locations;
