@@ -19,6 +19,7 @@
             var headlineContainer;                             // Inner headline container
             var headlineElements = tickerContainer.find('li'); // Original headline elements
             var headlines = [];                                // List of all the headlines
+            var headlineTagMap = {};                           // Maps the indexes of the HTML tags in the headlines to the headline index
             var outerTimeoutId;                                // Stores the outer ticker timeout id for pauses
             var innerTimeoutId;                                // Stores the inner ticker timeout id for pauses
             var currentHeadline = 0;                           // The index of the current headline in the list of headlines
@@ -26,10 +27,11 @@
             var firstOuterTick = true;                         // Whether this is the first time doing the outer tick
             var firstInnerTick = true;                         // Whether this is the first time doing the inner tick in this rendition of the outer one
 
+            var allowedTags = ['a', 'b', 'strong', 'span', 'i', 'em', 'u'];
+
             // Save all the headline text
             headlineElements.each(function (index, element) {
-                headlines.push(stripTags($(this).html(),
-                    ['a', 'b', 'strong', 'span', 'i', 'em', 'u'])); // Allow these tags
+                headlines.push(stripTags($(this).html(), allowedTags));
             });
 
             // Randomize?
@@ -182,7 +184,7 @@
     /**
      * Strip all HTML tags from a string.
      * An array of safe tags can be passed, which will not be
-     * stripped from the string with the rest of the tags
+     * stripped from the string with the rest of the tags.
      */
     function stripTags(text, safeTags) {
         safeTags = safeTags || [];
@@ -191,6 +193,22 @@
         return text.replace(comments, '').replace(tags, function (a, b) {
             return safeTags.indexOf(b.toLowerCase()) !== -1 ? a : '';
         });
+    }
+
+    /**
+     * Locates all of the request tags in a string.
+     * Returns an array of locations, each location being an array of the tag's start and end indexes.
+     */
+    function locateTags(text, tags) {
+        var tags = /<\/?([a-z][a-z0-9]*)\b[^>]*>/img;
+        var locations = [];
+        var match;
+
+        while (match = tags.exec(text)) {
+            locations.push([match.index, match[0].length - 1]);
+        }
+
+        return locations;
     }
 
     // Plugin default settings
