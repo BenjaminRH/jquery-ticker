@@ -32,9 +32,10 @@
             // Save all the headline text
             var h, l;
             headlineElements.each(function (index, element) {
-                h = stripTags($(this).html(), allowedTags);
-                l = locateTags(h, allowedTags)
-                headlines.push(h);
+                l = locateTags(h, allowedTags); // Get the locations of the allowed tags
+                h = stripTags($(this).html()); // Remove all of the HTML tags from the headline
+                headlines.push(h); // Add the headline to the headlines list
+                headlineTagMap[headlines.length - 1] = l; // Associate the tag map with the headline
             });
 
             // Randomize?
