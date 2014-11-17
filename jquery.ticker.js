@@ -19,6 +19,7 @@
             var headlineContainer;                             // Inner headline container
             var headlineElements = tickerContainer.find('li'); // Original headline elements
             var headlines = [];                                // List of all the headlines
+            var headlineTagMap = {};                           // Maps the indexes of the HTML tags in the headlines to the headline index
             var outerTimeoutId;                                // Stores the outer ticker timeout id for pauses
             var innerTimeoutId;                                // Stores the inner ticker timeout id for pauses
             var currentHeadline = 0;                           // The index of the current headline in the list of headlines
@@ -26,9 +27,16 @@
             var firstOuterTick = true;                         // Whether this is the first time doing the outer tick
             var firstInnerTick = true;                         // Whether this is the first time doing the inner tick in this rendition of the outer one
 
+            var allowedTags = ['a', 'b', 'strong', 'span', 'i', 'em', 'u'];
+
             // Save all the headline text
+            var h, l;
             headlineElements.each(function (index, element) {
-                headlines.push($(this).text());
+                h = stripTags($(this).html(), allowedTags); // Strip all but the allowed tags
+                l = locateTags(h); // Get the locations of the allowed tags
+                h = stripTags(h); // Remove all of the HTML tags from the headline
+                headlines.push(h); // Add the headline to the headlines list
+                headlineTagMap[headlines.length - 1] = l; // Associate the tag map with the headline
             });
 
             // Randomize?
@@ -73,7 +81,7 @@
                     // This is outside the timeout because we want to do this instantly without the pause
 
                     // Update the text
-                    headlineContainer.text(getCurrentTick());
+                    headlineContainer.html(getCurrentTick());
                     // Advance our position
                     currentHeadlinePosition += 1;
 
@@ -115,13 +123,13 @@
             // Do the individual ticks
             function tick() {
                 // Now let's update the ticker with the current tick string
-                if (currentHeadlinePosition == 0 && opts.fade) {
+                if (currentHeadlinePosition === 0 && opts.fade) {
                     clearTimeout(innerTimeoutId);
 
                     // Animate the transition if it's enabled
                     headlineContainer.fadeOut(opts.fadeOutSpeed, function () {
                         // Now it's faded out, let's update the text
-                        headlineContainer.text(getCurrentTick());
+                        headlineContainer.html(getCurrentTick());
                         // And fade in
                         headlineContainer.fadeIn(opts.fadeInSpeed, function () {
                             // Advance our position
@@ -133,7 +141,7 @@
                 }
                 else {
                     // Update the text
-                    headlineContainer.text(getCurrentTick());
+                    headlineContainer.html(getCurrentTick());
                     // Advance our position
                     currentHeadlinePosition += 1;
                     clearTimeout(innerTimeoutId);
@@ -143,7 +151,7 @@
 
             // Get the current tick string
             function getCurrentTick() {
-                var cursor;
+                var cursor, i, j, location;
                 switch (currentHeadlinePosition % 2) {
                     case 1:
                         cursor = opts.cursorOne;
@@ -156,7 +164,45 @@
                 // Don't display the cursor this was the last character of the headline
                 if (currentHeadlinePosition >= headlines[currentHeadline].length) cursor = '';
 
-                return headlines[currentHeadline].slice(0, currentHeadlinePosition) + cursor;
+                // Generate the headline
+                var headline = '';
+                var openedTags = [];
+                for (i = 0; i < currentHeadlinePosition; i++) {
+                    location = null;
+                    // Check to see if there's meant to be a tag at this index
+                    for (j = 0; j < headlineTagMap[currentHeadline].length; j++) {
+                        // Find a tag mapped to this location, if one exists
+                        if (headlineTagMap[currentHeadline][j] && headlineTagMap[currentHeadline][j].start === i) {
+                            location = headlineTagMap[currentHeadline][j]; // It does exist!
+                            break;
+                        }
+                    }
+
+                    if (location) {
+                        // Add the tag to the headline
+                        headline += location.tag;
+
+                        // Now deal with the tag for proper HTML
+                        if (! location.selfClosing) {
+                            if (location.tag.charAt(1) === '/') {
+                                openedTags.pop();
+                            }
+                            else {
+                                openedTags.push(location.name);
+                            }
+                        }
+                    }
+
+                    // Add the character to the headline
+                    headline += headlines[currentHeadline][i];
+                }
+
+                // Now close the tags, if we need to (because it hasn't finished with all the text in the tag)
+                for (i = 0; i < openedTags.length; i++) {
+                    headline += '</' + openedTags[i] + '>';
+                }
+
+                return headline + cursor;
             }
 
             // Start it
@@ -176,6 +222,53 @@
             array[j] = temp;
         }
         return array;
+    }
+
+    /**
+     * Strip all HTML tags from a string.
+     * An array of safe tags can be passed, which will not be
+     * stripped from the string with the rest of the tags.
+     */
+    function stripTags(text, safeTags) {
+        safeTags = safeTags || [];
+        var tags = /<\/?([a-z][a-z0-9]*)\b[^>]*>/img;
+        var comments = /<!--.*?-->/img;
+        return text.replace(comments, '').replace(tags, function (a, b) {
+            return safeTags.indexOf(b.toLowerCase()) !== -1 ? a : '';
+        });
+    }
+
+    /**
+     * Locates all of the requested tags in a string.
+     */
+    function locateTags(text, tagList) {
+        tagList = tagList || [];
+        var tags = /<\/?([a-z][a-z0-9]*)\b[^>]*>/im;
+        var selfClosing = /\/\s{0,}>$/m;
+        var locations = [];
+        var match, location;
+
+        while ((match = tags.exec(text)) !== null) {
+            if (tagList.length === 0 || tagList.indexOf(match[1]) !== -1) {
+                location = {
+                    tag: match[0],
+                    name: match[1],
+                    selfClosing: selfClosing.test(match[0]),
+                    start: match.index,
+                    end: match.index + match[0].length - 1
+                };
+                locations.push(location);
+
+                // Now remove this tag from the string
+                // so that each location will represent it in a string without any of the tags
+                text = text.slice(0, location.start) + text.slice(location.end + 1);
+
+                // Reset the regex
+                tags.lastIndex = 0;
+            }
+        }
+
+        return locations;
     }
 
     // Plugin default settings
