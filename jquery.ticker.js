@@ -28,7 +28,8 @@
 
             // Save all the headline text
             headlineElements.each(function (index, element) {
-                headlines.push($(this).text());
+                headlines.push(stripTags($(this).html(),
+                    ['a', 'b', 'strong', 'span', 'i', 'em', 'u'])); // Allow these tags
             });
 
             // Randomize?
@@ -115,7 +116,7 @@
             // Do the individual ticks
             function tick() {
                 // Now let's update the ticker with the current tick string
-                if (currentHeadlinePosition == 0 && opts.fade) {
+                if (currentHeadlinePosition === 0 && opts.fade) {
                     clearTimeout(innerTimeoutId);
 
                     // Animate the transition if it's enabled
@@ -176,6 +177,20 @@
             array[j] = temp;
         }
         return array;
+    }
+
+    /**
+     * Strip all HTML tags from a string.
+     * An array of safe tags can be passed, which will not be
+     * stripped from the string with the rest of the tags
+     */
+    function stripTags(text, safeTags) {
+        safeTags = safeTags || [];
+        var tags = /<\/?([a-z][a-z0-9]*)\b[^>]*>/img;
+        var comments = /<!--.*?-->/img;
+        return text.replace(comments, '').replace(tags, function (a, b) {
+            return safeTags.indexOf(b.toLowerCase()) !== -1 ? a : '';
+        });
     }
 
     // Plugin default settings
