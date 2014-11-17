@@ -26,6 +26,14 @@
             var firstOuterTick = true;                         // Whether this is the first time doing the outer tick
             var firstInnerTick = true;                         // Whether this is the first time doing the inner tick in this rendition of the outer one
 
+            if (opts.finishOnHover || opts.pauseOnHover) {
+                // Setup monitoring hover state
+                tickerContainer.removeClass('hover');
+                tickerContainer.hover(function() {
+                    $(this).toggleClass('hover');
+                });
+            }
+
             // Save all the headline text
             headlineElements.each(function (index, element) {
                 headlines.push($(this).text());
@@ -49,7 +57,7 @@
                 }
 
                 outerTimeoutId = setTimeout(function () {
-                    if (opts.pauseOnHover && tickerContainer.is(':hover')) {
+                    if (opts.pauseOnHover && tickerContainer.hasClass('hover')) {
                         // User is hovering over the ticker and pause on hover is enabled
                         clearTimeout(innerTimeoutId);
                         outerTick();
@@ -68,7 +76,7 @@
                     return;
                 }
 
-                if (opts.finishOnHover && opts.pauseOnHover && tickerContainer.is(':hover') && currentHeadlinePosition <= headlines[currentHeadline].length) {
+                if (opts.finishOnHover && opts.pauseOnHover && tickerContainer.hasClass('hover') && currentHeadlinePosition <= headlines[currentHeadline].length) {
                     // Let's quickly complete the headline
                     // This is outside the timeout because we want to do this instantly without the pause
 
@@ -83,7 +91,7 @@
                 else {
                     // Handle as normal
                     innerTimeoutId = setTimeout(function () {
-                        if (opts.pauseOnHover && tickerContainer.is(':hover')) {
+                        if (opts.pauseOnHover && tickerContainer.hasClass('hover')) {
                             // User is hovering over the ticker and pause on hover is enabled
                             clearTimeout(innerTimeoutId);
                             innerTick();
