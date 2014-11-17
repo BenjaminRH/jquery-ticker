@@ -200,8 +200,7 @@
     }
 
     /**
-     * Locates all of the request tags in a string.
-     * Returns an array of locations, each location being an array of the tag's start and end indexes.
+     * Locates all of the requested tags in a string.
      */
     function locateTags(text, tagList) {
         tagList = tagList || [];
@@ -209,9 +208,13 @@
         var locations = [];
         var match;
 
-        while (match = tags.exec(text)) {
+        while ((match = tags.exec(text)) !== null) {
             if (tagList.length === 0 || tagList.indexOf(match[1]) !== -1) {
-                locations.push([match.index, match[0].length - 1]);
+                locations.push({
+                    tag: match[0],
+                    start: match.index,
+                    end: match.index + match[0].length - 1
+                });
             }
         }
 
