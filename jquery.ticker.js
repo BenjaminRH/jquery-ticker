@@ -1,5 +1,5 @@
 /*!
- * jQuery Ticker Plugin v1.2.0
+ * jQuery Ticker Plugin v1.2.1
  * https://github.com/BenjaminRH/jquery-ticker
  *
  * Copyright 2014 Benjamin Harris
@@ -81,6 +81,11 @@
                 if (firstInnerTick) {
                     firstInnerTick = false;
                     tick();
+                    return;
+                }
+
+                if (currentHeadlinePosition > headlines[currentHeadline].length) {
+                    advance();
                     return;
                 }
 
